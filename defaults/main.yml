@@ -1,0 +1,34 @@
+# Copyright (c) Ontic. (http://www.ontic.com.au). All rights reserved.
+# See the COPYING file bundled with this package for license details.
+
+---
+
+kong_version: '1.0.0'
+
+kong_bin_path: '/usr/local/bin'
+kong_config_path: '/etc/kong'
+kong_prefix_path: '/usr/local/kong'
+
+kong_service_name: 'kong'
+kong_service_state: 'started'
+kong_service_enabled: 'yes'
+kong_service_template: 'kong.service.j2'
+
+kong_run_migrations: no
+kong_binary_file: '{{ kong_bin_path }}/kong'
+kong_database_service: 'postgresql.service'
+
+kong_db_host: 10.87.80.4
+kong_db_port: 5432
+kong_db_user: kong
+kong_db_password: kong
+kong_db_database: kong
+
+kong_config:
+kong_config_file: '{{ kong_config_path }}/kong.conf'
+kong_config_file_refresh: no
+kong_config_template: 'kong.conf.j2'
+
+kong_nginx_pid_file: '{{ kong_prefix_path }}/pids/nginx.pid'
+kong_nginx_config_file: '{{ kong_config_path }}/nginx-kong.template'
+kong_nginx_config_template: 'nginx-kong.template.j2'

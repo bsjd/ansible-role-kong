@@ -1,0 +1,64 @@
+# Copyright (c) Ontic. (http://www.ontic.com.au). All rights reserved.
+# See the COPYING file bundled with this package for license details.
+
+---
+
+- name: 'Kong | Include OS-specific variables.'
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+  tags:
+    - 'kong'
+    - 'kong-package'
+    - 'kong-configure'
+    - 'kong-service'
+    - 'package'
+    - 'configure'
+    - 'service'
+
+- name: 'Kong | Define whether Kong is prepared.'
+  become: yes
+  stat:
+    path: '{{ kong_prefix_path }}'
+  register: 'kong_prepared'
+  tags:
+    - 'kong'
+    - 'kong-package'
+    - 'kong-configure'
+    - 'kong-service'
+    - 'package'
+    - 'configure'
+    - 'service'
+
+- name: 'Kong | Define log path.'
+  set_fact:
+    kong_log_path: '{{ kong_default_log_path }}'
+  when: 'kong_log_path is not defined'
+  tags:
+    - 'kong'
+    - 'kong-package'
+    - 'kong-configure'
+    - 'kong-service'
+    - 'package'
+    - 'configure'
+    - 'service'
+
+- import_tasks: 'package.yml'
+  tags:
+    - 'kong'
+    - 'kong-package'
+    - 'package'
+
+- import_tasks: 'configure.yml'
+  tags:
+    - 'kong'
+    - 'kong-configure'
+    - 'configure'
+
+- import_tasks: 'service.yml'
+  tags:
+    - 'kong'
+    - 'kong-service'
+    - 'service'
